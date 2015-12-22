@@ -12,11 +12,9 @@ EDGE_WEIGHT_FORMAT: LOWER_DIAG_ROW
 EDGE_WEIGHT_SECTION
 {matrix_s}EOF"""
 
-CONCORDE = os.environ.get('CONCORDE', 'concorde')
-if not os.path.exists(CONCORDE):
-    raise ValueError("Cannot fine the concorde executable;"
-                     " add to your PATH or specify with CONCORDE env var")
-#'/Users/mperry/projects/tsp/concorde/TSP/concorde'
+class ConcordeNotFound(IOError):
+    pass
+
 
 def atsp_tsp(matrix, strategy="avg"):
     """ convert an asymterical tsp to symetrical
@@ -70,10 +68,17 @@ def run_concorde(tsp_path, start=None):
     bdir = os.path.dirname(tsp_path)
     os.chdir(bdir)
 
-    output = subprocess.check_output([CONCORDE, tsp_path], shell=False)
+    CONCORDE = os.environ.get('CONCORDE', 'concorde')
+    try:
+        output = subprocess.check_output([CONCORDE, tsp_path], shell=False)
+    except OSError as exc:
+        if "No such file or directory" in str(exc):
+            raise ConcordeNotFound(
+                "{0} is not found on your path or is not executable".format(CONCORDE))
 
-    solf = os.path.join(bdir,
-                        os.path.splitext(os.path.basename(tsp_path))[0] + ".sol")
+    solf = os.path.join(
+        bdir, os.path.splitext(os.path.basename(tsp_path))[0] + ".sol")
+
     with open(solf) as src:
         sol = src.read()
 
