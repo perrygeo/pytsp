@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='pyconcorde',
-    version='0.1',
+    version='0.1.1',
     description='pyconcorde is a python interface to the Concorde TSP solver',
     license='MIT',
     author='Matthew Perry',
