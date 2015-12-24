@@ -20,11 +20,16 @@ def atsp_tsp(matrix, strategy="avg"):
     """ convert an asymterical tsp to symetrical
     """
 
-    arr = np.array(matrix).astype('i')
+    arr = np.array(matrix)
 
     if strategy == 'avg':
         rarr = np.flipud(np.rot90(arr))
-        avg = ((arr + rarr) / 2).astype('i')
+        avg = ((arr + rarr) / 2)
+        # keep it < 32768 to stay within 16bit int
+        scale = 32768.0 / avg.max()
+        if scale > 1.0:
+            scale = 1.0
+        avg = (avg * scale).astype('i')
         return avg
 
     if strategy == 'cutoff':
