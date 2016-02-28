@@ -1,11 +1,14 @@
 # pyconcorde
 
-A python interface to Concorde, a solver for the traveling salesman problem.
+A python interface to external solvers for the traveling salesman problem.
 
-Concorde is available free of charge for research use at http://www.math.uwaterloo.ca/tsp/concorde.html
+Support for 
+* Concorde, available free of charge for research use at http://www.math.uwaterloo.ca/tsp/concorde.html
+* LKH, available free of charge for research use at http://www.akira.ruc.dk/~keld/research/LKH/
 
-It is the user's responsibility to install Concorde and ensure compliance with the terms of use. When done installing
-make sure the `concorde` executable is on your path or set `CONCORDE="/path/to/your/concorde"` as an environment variable.
+It is the user's responsibility to install these solvers and ensure compliance with the terms of use.
+When done installing
+make sure the binaries (`concorde` and/or `LKH`) are on your `PATH` or set `CONCORDE` and/or `LKH` environment variables to their respective binaries.
 
 ## Overview
 
@@ -35,9 +38,13 @@ Next, write temporary file in the `tsp` format
     with open(outf, 'w') as dest:
         dest.write(dumps_matrix(matrix_sym, name="My Route"))
 
-Finally, run the optimization
+Finally, run the optimization with concorde
 
-    tour = run_concorde(outf, start=10)
+    tour = run(outf, start=10, solver="concorde")
+
+or with LKH
+
+    tour = run(outf, start=10, solver="LKH")
 
 The tour dictionary contains these keys:
 
