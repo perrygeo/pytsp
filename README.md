@@ -1,6 +1,6 @@
-# pyconcorde
+# pytsp
 
-A python interface to external solvers for the traveling salesman problem.
+A python interface to external solvers for the **traveling salesman problem**.
 
 Support for 
 * Concorde, available free of charge for research use at http://www.math.uwaterloo.ca/tsp/concorde.html
